@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Role;
 
 class UnverifiedUserTableSeeder extends Seeder
 {
@@ -11,13 +12,16 @@ class UnverifiedUserTableSeeder extends Seeder
      */
     public function run()
     {
+        $roles = Role::all()->pluck('name')->all();
+        $randomRoles = \Arr::random($roles);
+
         DB::table('users')->insert([
             'id' => Str::uuid(),
-            'name' => 'Unverified User',
-            'email' => 'unverifieduser@gmail.com',
+            'name' => 'User',
+            'email' => 'user@gmail.com',
             'email_verified_at' => null,
             'password' => bcrypt('admin'),
-            'role_id' => '1fe7a5f3-a91d-4b9d-9773-58276e84bd98'
+            'role_id' => Role::where('name', $randomRoles)->first()->id
         ]);
     }
 }
