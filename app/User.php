@@ -2,15 +2,28 @@
 
 namespace App;
 
+use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use App\Role;
 
-class User extends Authenticatable
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    protected function getUserRoleId() {
+        $role = Role::where('name', 'user')->first();
+        return $role->id;
+    }
+
+    public static function boot() {
+        parent::boot();
+        static::creating(function($model) {
+            $model->role_id = $model->getUserRoleId();
+        });
+    }
 
     public function getIncrementing() {
         return false;
@@ -26,7 +39,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'role_id'
+        'id', 'name', 'email', 'photo', 'password', 'role_id', 'created_at', 'updated_at'
     ];
 
     /**
@@ -44,7 +57,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'email_verified_at' => 'datetime:Y-m-d H:m:s',
+        'created_at' => 'datetime:Y-m-d H:m:s',
+        'updated_at' => 'datetime:Y-m-d H:m:s',
     ];
 
     public function otpCode()
@@ -55,5 +70,20 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo('App\Role');
+    }
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     * 
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [];
     }
 }
