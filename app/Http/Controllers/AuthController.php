@@ -10,6 +10,8 @@ use App\Role;
 use App\OtpCode;
 use Carbon\Carbon;
 use Hash;
+use App\Events\UserRegisteredEvent;
+use App\Events\UserRegenerateOtpEvent;
 
 class AuthController extends Controller
 {
@@ -24,7 +26,7 @@ class AuthController extends Controller
             'id' => Str::uuid(),
             'name' => 'random name',
             'email' => \Request('email'),
-            'password' => bcrypt(\Request('password')),
+            'password' => \Request('password'),
             // 'role_id' => Role::where('name', 'user')->first()->id,
             'created_at' => Carbon::now('Asia/Jakarta'),
             'updated_at' => Carbon::now('Asia/Jakarta')
@@ -37,6 +39,9 @@ class AuthController extends Controller
             'created_at' => Carbon::now('Asia/jakarta'),
             'updated_at' => Carbon::now('Asia/jakarta')
         ]);
+
+        
+        event(new UserRegisteredEvent($user));
 
         return response()->json([
             'response_code' => '00',
@@ -79,19 +84,26 @@ class AuthController extends Controller
 
     public function regenerateOtp(Request $request) {
         
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $request->email)->with('otpCode')->first();
         if (!$user) {
             return response()->json([
                 'response_code' => "01",
                 'response_message' => 'email tidak ditemukan 😠'
             ]);
         }
-
+        if ($user->email_verified_at) {
+            return response()->json([
+                'response_code' => "01",
+                'response_message' => 'email sudah terverifikasi 😠'
+            ]);
+        }
         OtpCode::where('user_id', $user->id)->update([
             'code' => mt_rand(100000, 999999),
             'expired_at' => Carbon::now('Asia/Jakarta')->addMinutes(5),
             'updated_at' => Carbon::now('Asia/jakarta')
         ]);
+
+        event(new UserRegenerateOtpEvent($user));
         
         return response()->json([
             'response_code' => "00",
