@@ -34,3 +34,6 @@ Route::group([
     Route::get('get-profile', 'ProfileController@getProfile');
     Route::post('update-profile', 'ProfileController@updateProfile');
 });
+
+Route::get('users', 'TestController@getUsers');
+Route::delete('users/delete/{id}', 'TestController@removeUser');

@@ -23,3 +23,7 @@ Route::group(['middleware' => ['verified']], function () {
 Route::group(['middleware' => ['auth', 'isAdmin']], function () {
     Route::get('/admin', 'TestController@checkAdmin');
 });
+
+Route::get('users', function(){
+    return view('users');
+});
