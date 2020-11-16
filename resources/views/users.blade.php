@@ -58,6 +58,7 @@
             },
             methods: {
                 addUser: function() {
+                    this.message = 'loading...'
                     let userData = {
                         email: this.email,
                         password: this.password
@@ -67,14 +68,22 @@
                         // console.log(response.data.data)
                         let userRegistered = response.data.data.user
                         this.users.unshift(userRegistered)
-                        this.message = response.data.response_message
+                        setTimeout(() => {
+                            this.message = 'loading...'
+                            this.message = response.data.response_message
+                        }, 300);
+
                     })
                 },
                 removeUser: function(user, index) {
+                    this.message = 'loading...'
                     this.users.splice(index, 1)
                     axios.delete(`/api/users/delete/${user.id}`)
                     .then(response => {
-                        this.message = response.data.response_message
+                        setTimeout(() => {
+                            this.message = 'loading..'
+                            this.message = response.data.response_message
+                        }, 300);
                     })
                 }
             }
