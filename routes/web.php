@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::view('/{any?}', 'app')->where('any', '.*');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
@@ -27,3 +25,5 @@ Route::group(['middleware' => ['auth', 'isAdmin']], function () {
 Route::get('users', function(){
     return view('users');
 });
+
+
