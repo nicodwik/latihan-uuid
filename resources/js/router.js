@@ -17,10 +17,6 @@ const router = new Router({
             path: '/donations',
             name: 'donations',
             component: () => import('./views/Donations.vue')
-        },
-        {
-            path: '*',
-            redirect: '/'
         }
     ]
 })

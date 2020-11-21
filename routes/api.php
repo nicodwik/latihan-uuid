@@ -37,3 +37,11 @@ Route::group([
 
 Route::get('users', 'TestController@getUsers');
 Route::delete('users/delete/{id}', 'TestController@removeUser');
+
+Route::group([
+    'prefix' => 'campaign',
+    'middleware' => 'api'
+], function () {
+    Route::get('random/{count}', 'CampaignController@random');
+    Route::post('store', 'CampaignController@store');
+});
