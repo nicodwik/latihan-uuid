@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Dancok</h1>
+    <h1>Loading...</h1>
     <div id="app">
         <app></app>
     </div>

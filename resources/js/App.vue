@@ -44,23 +44,37 @@
             </template>
         </v-navigation-drawer>
 
-        <v-app-bar app color="success" dark>
+        <v-app-bar app color="success" dark v-if="isHome">
             <v-app-bar-nav-icon @click.stop='drawer = !drawer'></v-app-bar-nav-icon>
             <v-toolbar-title>Dummy-CrowdfundingApp</v-toolbar-title>
 
             <v-spacer></v-spacer>
             <v-btn icon>
-                <v-badge color="orange" overlap>
-                    <template v-slot:badge>
-                        <span>3</span>
-                    </template>
                     <v-icon>mdi-cash-multiple</v-icon>
+                <v-badge v-if="handlePayment>0" color="orange" overlap class="mb-5">
+                    <template v-slot:badge>
+                            <span >{{handlePayment}}</span>                        
+                    </template>
                 </v-badge>
             </v-btn>
 
             <v-text-field slot="extension" hide-details append-icon="mdi-microphone" flat label="search" prepend-inner-icon="mdi-magnify" solo-inverted>
 
             </v-text-field>
+        </v-app-bar>
+        <v-app-bar app color="success" dark v-else>
+            <v-btn icon @click.stop="$router.go(-1)">
+                <v-icon>mdi-arrow-left-circle</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+                    <v-icon>mdi-cash-multiple</v-icon>
+                <v-badge v-if="handlePayment>0" color="orange" overlap class="mb-5">
+                    <template v-slot:badge>
+                            <span >{{handlePayment}}</span>                        
+                    </template>
+                </v-badge>
+            </v-btn>
         </v-app-bar>
 
         <!-- Sizes your content based upon application components -->
@@ -88,6 +102,7 @@
 export default {
     name: 'App',
     data: () => ({
+        payments: 0,
         drawer: false,
         menus: [
             {
@@ -102,6 +117,15 @@ export default {
             }
         ],
         guest: false
-    })
+    }),
+    computed: {
+        isHome() {
+            return (this.$route.path === '/' || this.$route.path === '/home')
+        },
+        handlePayment(){
+            return this.$store.getters.addPayment
+        }
+        
+    }
 }
 </script>

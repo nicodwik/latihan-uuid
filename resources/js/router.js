@@ -17,6 +17,16 @@ const router = new Router({
             path: '/donations',
             name: 'donations',
             component: () => import('./views/Donations.vue')
+        },
+        {
+            path: '/campaigns',
+            name: 'campaigns',
+            component: () => import('./views/Campaigns.vue')
+        },
+        {
+            path: '/campaign/:id',
+            name: 'campaign',
+            component: () => import('./views/Campaign.vue')
         }
     ]
 })

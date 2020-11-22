@@ -34,6 +34,9 @@ class CampaignController extends Controller
             'description' => \Request('description'),
             'created_at'=> Carbon::now('Asia/Jakarta'),
             'updated_at'=> Carbon::now('Asia/Jakarta'),
+            'address' => \Request('address'),
+            'required' => \Request('required'),
+            'collected' => \Request('collected'),
         ]);
 
         if ($request->hasFile('image')) {
@@ -59,6 +62,24 @@ class CampaignController extends Controller
             'data' => [
                 'campaign' => $campaign
             ]
+        ]);
+    }
+
+    public function index() {
+        $campaigns = Campaign::paginate(3);
+        return response()->json([
+            'response_code' => '00',
+            'response_message' => 'success',
+            'data' => $campaigns
+        ]);
+    }
+
+    public function detail($id) {
+        $campaign = Campaign::find($id);
+        return response()->json([
+            'response_code' => '00',
+            'response_message' => 'suucess',
+            'data' => $campaign
         ]);
     }
 }

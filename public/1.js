@@ -1,9 +1,9 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([[1],{
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Home.vue?vue&type=script&lang=js&":
-/*!**********************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Home.vue?vue&type=script&lang=js& ***!
-  \**********************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Campaigns.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Campaigns.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -27,33 +27,42 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      campaigns: []
+      campaigns: [],
+      page: 0,
+      lengthPage: 0
     };
   },
   created: function created() {
-    var _this = this;
+    this.go();
+  },
+  methods: {
+    go: function go() {
+      var _this = this;
 
-    axios.get('api/campaign/random/1').then(function (response) {
-      var data = response.data.data;
-      _this.campaigns = data.campaigns;
-      console.log(_this.campaigns);
-    })["catch"](function (error) {
-      var response = error.response; // console.log(response)
-    });
+      // let url = `api/campaign?page=${this.page}`
+      axios.get("/api/campaign?page=".concat(this.page)).then(function (response) {
+        // console.log(response.data)
+        var data = response.data.data;
+        _this.campaigns = data.data;
+        _this.page = data.current_page;
+        _this.lengthPage = data.last_page;
+      })["catch"](function (error) {
+        var resposes = error.resposes;
+        console.log(resposes);
+      });
+    }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Home.vue?vue&type=template&id=63cd6604&":
-/*!**************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Home.vue?vue&type=template&id=63cd6604& ***!
-  \**************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Campaigns.vue?vue&type=template&id=5a8949d4&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Campaigns.vue?vue&type=template&id=5a8949d4& ***!
+  \*******************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -72,30 +81,12 @@ var render = function() {
         "v-container",
         { staticClass: "ma-0 pa-0", attrs: { "grid-list-sm": "" } },
         [
-          _c(
-            "div",
-            { staticClass: "text-right" },
-            [
-              _c(
-                "v-btn",
-                {
-                  staticClass: "blue--text",
-                  attrs: { small: "", text: "", to: "/campaigns" }
-                },
-                [
-                  _vm._v("\n            All Campaign "),
-                  _c("v-icon", [_vm._v("mdi-chrvron-right")])
-                ],
-                1
-              )
-            ],
-            1
-          ),
+          _c("v-subheader", [_vm._v("All Campaigns")]),
           _vm._v(" "),
           _c(
             "v-layout",
             { attrs: { wrap: "" } },
-            _vm._l(_vm.campaigns, function(campaign, index) {
+            _vm._l(_vm.campaigns, function(campaign) {
               return _c(
                 "v-flex",
                 { key: "campaign-" + campaign.id, attrs: { xs6: "" } },
@@ -126,7 +117,19 @@ var render = function() {
               )
             }),
             1
-          )
+          ),
+          _vm._v(" "),
+          _c("v-pagination", {
+            attrs: { length: _vm.lengthPage, "total-visible": 5 },
+            on: { input: _vm.go },
+            model: {
+              value: _vm.page,
+              callback: function($$v) {
+                _vm.page = $$v
+              },
+              expression: "page"
+            }
+          })
         ],
         1
       )
@@ -141,17 +144,17 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./resources/js/views/Home.vue":
-/*!*************************************!*\
-  !*** ./resources/js/views/Home.vue ***!
-  \*************************************/
+/***/ "./resources/js/views/Campaigns.vue":
+/*!******************************************!*\
+  !*** ./resources/js/views/Campaigns.vue ***!
+  \******************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Home.vue?vue&type=template&id=63cd6604& */ "./resources/js/views/Home.vue?vue&type=template&id=63cd6604&");
-/* harmony import */ var _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Home.vue?vue&type=script&lang=js& */ "./resources/js/views/Home.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Campaigns_vue_vue_type_template_id_5a8949d4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Campaigns.vue?vue&type=template&id=5a8949d4& */ "./resources/js/views/Campaigns.vue?vue&type=template&id=5a8949d4&");
+/* harmony import */ var _Campaigns_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Campaigns.vue?vue&type=script&lang=js& */ "./resources/js/views/Campaigns.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -161,9 +164,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Campaigns_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Campaigns_vue_vue_type_template_id_5a8949d4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Campaigns_vue_vue_type_template_id_5a8949d4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -173,38 +176,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/Home.vue"
+component.options.__file = "resources/js/views/Campaigns.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/Home.vue?vue&type=script&lang=js&":
-/*!**************************************************************!*\
-  !*** ./resources/js/views/Home.vue?vue&type=script&lang=js& ***!
-  \**************************************************************/
+/***/ "./resources/js/views/Campaigns.vue?vue&type=script&lang=js&":
+/*!*******************************************************************!*\
+  !*** ./resources/js/views/Campaigns.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Home.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Home.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Campaigns_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./Campaigns.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Campaigns.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Campaigns_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/Home.vue?vue&type=template&id=63cd6604&":
-/*!********************************************************************!*\
-  !*** ./resources/js/views/Home.vue?vue&type=template&id=63cd6604& ***!
-  \********************************************************************/
+/***/ "./resources/js/views/Campaigns.vue?vue&type=template&id=5a8949d4&":
+/*!*************************************************************************!*\
+  !*** ./resources/js/views/Campaigns.vue?vue&type=template&id=5a8949d4& ***!
+  \*************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Home.vue?vue&type=template&id=63cd6604& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Home.vue?vue&type=template&id=63cd6604&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Campaigns_vue_vue_type_template_id_5a8949d4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Campaigns.vue?vue&type=template&id=5a8949d4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Campaigns.vue?vue&type=template&id=5a8949d4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Campaigns_vue_vue_type_template_id_5a8949d4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Home_vue_vue_type_template_id_63cd6604___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Campaigns_vue_vue_type_template_id_5a8949d4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
