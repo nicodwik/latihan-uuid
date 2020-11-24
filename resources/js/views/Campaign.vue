@@ -13,11 +13,11 @@
                         </tr>
                         <tr>
                             <td><v-icon>mdi-hand-heart</v-icon> Terkumpul</td>
-                            <td>Rp {{campaign.collected.toLocaleString('id-ID')}}</td>
+                            <td>Rp {{campaign.collected}}</td>
                         </tr>
                         <tr>
                             <td><v-icon>mdi-cash</v-icon> Dibutuhkan</td>
-                            <td>Rp {{campaign.required.toLocaleString('id-ID')}}</td>
+                            <td>Rp {{campaign.required}}</td>
                         </tr>
                     </tbody>
                 </v-simple-table>
@@ -25,7 +25,7 @@
                 {{campaign.description}}
             </v-card-text>
             <v-card-actions>
-                <v-btn block color="primary" @click="handleClick" :disabled="campaign.collected >= campaign.required">
+                <v-btn block color="primary" @click="donate" :disabled="campaign.collected >= campaign.required">
                     <v-icon>mdi-money</v-icon>&nbsp;
                     DONATE
                 </v-btn>
@@ -34,6 +34,7 @@
     </div>
 </template>
 <script>
+import { mapMutations, mapActions } from 'vuex'
 export default {
     data: () => ({
         campaign: {},
@@ -57,12 +58,24 @@ export default {
                     console.log(response)
                 })
         },
-        donate() {
-            alert('donate')
-        },
-        handleClick(){
-            this.$store.commit('addPayment')
+        ...mapMutations({
+           handleClick : 'payment/addPayment' 
+        }),
+        ...mapActions({
+           setAlert : 'alert/set' 
+        }),
+
+        donate(){
+            this.handleClick()
+            this.setAlert({
+                status: true,
+                color: 'success',
+                message: 'Berhasil'
+            })
         }
+        // handleClick(){
+        //     this.$store.commit('addPayment')
+        // }
     }
 }
 </script>

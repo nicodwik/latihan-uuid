@@ -9,7 +9,7 @@
             </v-card-actions>
             <v-card-actions>
                 <v-icon>mdi-cash</v-icon>
-                <span>Rp {{campaign.required.toLocaleString('id-ID')}}</span>
+                <span>Rp {{campaign.required}}</span>
                 <v-spacer></v-spacer>
                 <span>{{Math.round(progress)}}%</span>
             </v-card-actions>

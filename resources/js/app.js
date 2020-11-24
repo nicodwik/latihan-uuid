@@ -3,24 +3,16 @@ import Vuex from 'vuex'
 import router from './router.js'
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
+import payment from './stores/payment'
+import alert from './stores/alert'
 import './bootstrap'
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-    state: {
-        payments: 0
-    },
-    mutations: {
-        addPayment(state){
-            let plus = state.payments++
-            console.log(plus)
-        }
-    },
-    getters: {
-        addPayment(state) {
-            return state.payments
-        }
+    modules: {
+        payment,
+        alert
     }
 })
 

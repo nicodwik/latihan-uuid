@@ -79,7 +79,18 @@ class CampaignController extends Controller
         return response()->json([
             'response_code' => '00',
             'response_message' => 'suucess',
-            'data' => $campaign
+            'data' => $campaign,
+        ]);
+    }
+
+    public function search($keyword) {
+        $data = Campaign::where('title', 'LIKE', "%".$keyword."%")->get();
+        $count = $data->count();
+        return response()->json([
+            'response_code' => '00',
+            'response_message' => 'data berhasil ditampilkan',
+            'data' => $data ,
+            'total' => $count
         ]);
     }
 }

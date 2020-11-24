@@ -1,5 +1,11 @@
 <template>
     <v-app>
+        <alert></alert>
+
+        <v-dialog v-model="dialog" fullscreen hide-overlay transition="scale-transition">
+            <search @closed="closeDialog"/>
+        </v-dialog>
+
         <v-navigation-drawer app v-model='drawer'>
             <v-list>
                 <v-list-item v-if="!guest">
@@ -50,15 +56,16 @@
 
             <v-spacer></v-spacer>
             <v-btn icon>
-                    <v-icon>mdi-cash-multiple</v-icon>
-                <v-badge v-if="handlePayment>0" color="orange" overlap class="mb-5">
+                <v-badge v-if="handlePayment>0" color="orange" overlap>
                     <template v-slot:badge>
                             <span >{{handlePayment}}</span>                        
                     </template>
+                    <v-icon>mdi-cash-multiple</v-icon>
                 </v-badge>
+                <v-icon>mdi-cash-multiple</v-icon>
             </v-btn>
 
-            <v-text-field slot="extension" hide-details append-icon="mdi-microphone" flat label="search" prepend-inner-icon="mdi-magnify" solo-inverted>
+            <v-text-field @click="openDialog" slot="extension" hide-details append-icon="mdi-microphone" flat label="search" prepend-inner-icon="mdi-magnify" solo-inverted>
 
             </v-text-field>
         </v-app-bar>
@@ -99,11 +106,20 @@
     </v-app>
 </template>
 <script>
+import {mapGetters} from 'vuex'
+import Alert from './components/Alert.vue'
+import Search from './components/Search.vue'
+
 export default {
+    components: { 
+      Alert,
+      Search 
+    },
     name: 'App',
     data: () => ({
-        payments: 0,
         drawer: false,
+        guest: false,
+        dialog: false,
         menus: [
             {
                 title: 'Home',
@@ -116,16 +132,25 @@ export default {
                 route: '/campaigns'
             }
         ],
-        guest: false
     }),
     computed: {
         isHome() {
             return (this.$route.path === '/' || this.$route.path === '/home')
         },
-        handlePayment(){
-            return this.$store.getters.addPayment
+        // handlePayment(){
+        //     return this.$store.getters.addPayment
+        // }
+        ...mapGetters({
+            'handlePayment' : 'payment/addPayment'
+        }),
+    },
+    methods: {
+        openDialog() {
+            this.dialog = true
+        },
+        closeDialog (value) {
+            this.dialog = value
         }
-        
     }
 }
 </script>
