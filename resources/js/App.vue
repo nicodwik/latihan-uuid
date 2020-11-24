@@ -2,9 +2,15 @@
     <v-app>
         <alert></alert>
 
-        <v-dialog v-model="dialog" fullscreen hide-overlay transition="scale-transition">
+        <!-- <v-dialog v-model="dialog" fullscreen hide-overlay transition="scale-transition">
             <search @closed="closeDialog"/>
-        </v-dialog>
+        </v-dialog> -->
+
+        <keep-alive>
+            <v-dialog v-model="dialog" fullscreen hide-overlay transition="scale-transition">
+                <component :is="currentComponent" @closed='setDialogStatus'></component>
+            </v-dialog>
+        </keep-alive>
 
         <v-navigation-drawer app v-model='drawer'>
             <v-list>
@@ -18,7 +24,7 @@
                 </v-list-item>
 
                 <div class="pa-2" v-if="guest">
-                    <v-btn block color='primary' class="mb-1">
+                    <v-btn block color='primary' class="mb-1" @click="setDialogComponent('login')">
                         <v-icon left>mdi-lock</v-icon>
                         Login
                     </v-btn>
@@ -65,7 +71,7 @@
                 <v-icon>mdi-cash-multiple</v-icon>
             </v-btn>
 
-            <v-text-field @click="openDialog" slot="extension" hide-details append-icon="mdi-microphone" flat label="search" prepend-inner-icon="mdi-magnify" solo-inverted>
+            <v-text-field @click="setDialogComponent('search')" slot="extension" hide-details append-icon="mdi-microphone" flat label="search" prepend-inner-icon="mdi-magnify" solo-inverted>
 
             </v-text-field>
         </v-app-bar>
@@ -106,20 +112,22 @@
     </v-app>
 </template>
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters,mapActions} from 'vuex'
 import Alert from './components/Alert.vue'
 import Search from './components/Search.vue'
+import Login from './components/Search.vue'
 
 export default {
     components: { 
       Alert,
-      Search 
+      Search,
+      Login 
     },
     name: 'App',
     data: () => ({
         drawer: false,
-        guest: false,
-        dialog: false,
+        // guest: false,
+        // dialog: false,
         menus: [
             {
                 title: 'Home',
@@ -141,16 +149,32 @@ export default {
         //     return this.$store.getters.addPayment
         // }
         ...mapGetters({
-            'handlePayment' : 'payment/addPayment'
+            'handlePayment' : 'payment/addPayment',
+            'guest' : 'auth/guest',
+            'user' : 'auth/user',
+            'dialogStatus' : 'dialog/status',
+            'currentComponent' : 'dialog/component'
         }),
+        dialog: {
+            get() {
+                return this.DialogStatus
+            },
+            set(value) {
+                this.setDialogStatus(value)
+            }
+        }
     },
     methods: {
-        openDialog() {
-            this.dialog = true
-        },
-        closeDialog (value) {
-            this.dialog = value
-        }
+        // openDialog() {
+        //     this.dialog = true
+        // },
+        // closeDialog (value) {
+        //     this.dialog = value
+        // }
+        ...mapActions({
+            'setDialogStatus' : 'dialog/setStatus',
+            'setDialogComponent' : 'dialog/setComponent'
+        })
     }
 }
 </script>
