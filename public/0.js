@@ -163,7 +163,12 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("td", [
-                          _vm._v("Rp " + _vm._s(_vm.campaign.collected))
+                          _vm._v(
+                            "Rp " +
+                              _vm._s(
+                                _vm.campaign.collected.toLocaleString("id-ID")
+                              )
+                          )
                         ])
                       ]),
                       _vm._v(" "),
@@ -178,7 +183,12 @@ var render = function() {
                         ),
                         _vm._v(" "),
                         _c("td", [
-                          _vm._v("Rp " + _vm._s(_vm.campaign.required))
+                          _vm._v(
+                            "Rp " +
+                              _vm._s(
+                                _vm.campaign.required.toLocaleString("id-ID")
+                              )
+                          )
                         ])
                       ])
                     ])

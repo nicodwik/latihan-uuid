@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Social from './views/Social.vue'
 
 Vue.use(Router)
 
@@ -27,6 +28,15 @@ const router = new Router({
             path: '/campaign/:id',
             name: 'campaign',
             component: () => import('./views/Campaign.vue')
+        },
+        {
+            path: '/auth/social/google/callback',
+            name: 'social',
+            component: () => import('./views/Social.vue')
+        },
+        {
+            path: '*',
+            redirect: '/'
         }
     ]
 })

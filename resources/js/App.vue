@@ -7,8 +7,8 @@
         </v-dialog> -->
 
         <keep-alive>
-            <v-dialog v-model="dialog" fullscreen hide-overlay transition="scale-transition">
-                <component :is="currentComponent" @closed='setDialogStatus'></component>
+            <v-dialog v-model="dialog" fullscreen hide-overlay persistent transition="scale-transition">
+                <component :is="currentComponent" @closed="setDialogStatus"></component>
             </v-dialog>
         </keep-alive>
 
@@ -16,11 +16,11 @@
             <v-list>
                 <v-list-item v-if="!guest">
                     <v-list-item-avatar>
-                        <v-img src="https://randomuser.me/api/portraits/men/78.jpg"></v-img>
+                        <v-img :src="user.user.photo"></v-img>
                     </v-list-item-avatar>
-                    <v-list-content>
-                        <v-list-item-title>John Cena</v-list-item-title>
-                    </v-list-content>
+                    <v-list-item-content>
+                        <v-list-item-title>{{user.user.name}}</v-list-item-title>
+                    </v-list-item-content>
                 </v-list-item>
 
                 <div class="pa-2" v-if="guest">
@@ -48,7 +48,7 @@
 
             <template v-slot:append v-if="!guest">
                 <div class="pa-2">
-                    <v-btn block color="red" dark>
+                    <v-btn block color="red" dark @click="logout">
                         <v-icon left>mdi-lock</v-icon>
                         Logout
                     </v-btn>
@@ -68,7 +68,7 @@
                     </template>
                     <v-icon>mdi-cash-multiple</v-icon>
                 </v-badge>
-                <v-icon>mdi-cash-multiple</v-icon>
+                <v-icon v-else>mdi-cash-multiple</v-icon>
             </v-btn>
 
             <v-text-field @click="setDialogComponent('search')" slot="extension" hide-details append-icon="mdi-microphone" flat label="search" prepend-inner-icon="mdi-magnify" solo-inverted>
@@ -115,7 +115,7 @@
 import {mapGetters,mapActions} from 'vuex'
 import Alert from './components/Alert.vue'
 import Search from './components/Search.vue'
-import Login from './components/Search.vue'
+import Login from './components/Login.vue'
 
 export default {
     components: { 
@@ -149,18 +149,19 @@ export default {
         //     return this.$store.getters.addPayment
         // }
         ...mapGetters({
-            'handlePayment' : 'payment/addPayment',
-            'guest' : 'auth/guest',
-            'user' : 'auth/user',
-            'dialogStatus' : 'dialog/status',
-            'currentComponent' : 'dialog/component'
-        }),
+            handlePayment : 'payment/addPayment',
+            guest : 'auth/guest',
+            user : 'auth/user',
+            dialogStatus : 'dialog/status',
+            currentComponent : 'dialog/component'
+       }),
         dialog: {
             get() {
-                return this.DialogStatus
+                return this.dialogStatus
             },
             set(value) {
                 this.setDialogStatus(value)
+                console.log(value)
             }
         }
     },
@@ -172,9 +173,41 @@ export default {
         //     this.dialog = value
         // }
         ...mapActions({
-            'setDialogStatus' : 'dialog/setStatus',
-            'setDialogComponent' : 'dialog/setComponent'
-        })
-    }
+            setDialogStatus : 'dialog/setStatus',
+            setDialogComponent : 'dialog/setComponent',
+            setAuth : 'auth/set',
+            setAlert: 'alert/set',
+            checkToken: 'auth/checkToken'
+        }),
+        logout() {
+            let config = {
+                headers: {
+                    'Authorization' : `Bearer ${this.user.token}`
+                }
+            }
+            axios.post('/api/auth/logout', {}, config)
+                .then((response) => {
+                    this.setAuth({})
+                    this.setAlert({
+                        status: true,
+                        color: 'success',
+                        message: 'Logout berhasil'
+                    })
+                })
+                .catch((error) => {
+                    let {data} = error.response
+                    this.setAlert({
+                        status: true,
+                        color: 'error',
+                        message: data.message
+                    })
+                })
+        }
+    },
+    mounted() {
+        if(this.user) {
+            this.checkToken(this.user)
+        }
+    },
 }
 </script>

@@ -48,7 +48,7 @@ class ProfileController extends Controller
         }
         $profile->update([
             'name' => $request->name,
-            'photo' => $photo
+            'photo' => '/storage/' . $photo
         ]);
 
         return response()->json([

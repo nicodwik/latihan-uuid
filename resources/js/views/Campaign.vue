@@ -13,11 +13,11 @@
                         </tr>
                         <tr>
                             <td><v-icon>mdi-hand-heart</v-icon> Terkumpul</td>
-                            <td>Rp {{campaign.collected}}</td>
+                            <td>Rp {{campaign.collected.toLocaleString('id-ID')}}</td>
                         </tr>
                         <tr>
                             <td><v-icon>mdi-cash</v-icon> Dibutuhkan</td>
-                            <td>Rp {{campaign.required}}</td>
+                            <td>Rp {{campaign.required.toLocaleString('id-ID')}}</td>
                         </tr>
                     </tbody>
                 </v-simple-table>

@@ -31,6 +31,12 @@
 
                         Login
                         <v-icon right dark>mdi-lock-open</v-icon>
+                    </v-btn>
+                    <v-btn
+                        color="primary lighten-1"
+                        @click="authProvider('google')">
+                        Login with Google
+                        <v-icon right dark>mdi-google</v-icon>
                     </v-btn>    
                 </div>    
             </v-form>
@@ -44,14 +50,14 @@ export default {
     data() {
         return {
             valid: true,
-            email: 'myemail@gmail.com',
+            email: 'nicodwika@gmail.com',
             emailRules: [
                 v => !!v || 'Email is Required',
                 v => /([a-zA-Z0-9_]{1,})(@)([a-zA-Z0-9_]{2,}).([a-zA-Z0-9_]{2,})+/.test(v) || 'Email must be valid'
             ],
             showPassword: false,
-            password: '',
-            passwordRules = [
+            password: 'rahasiadunk',
+            passwordRules : [
                 v => !!v || 'Password required',
                 v => (v && v.length >= 6) || 'Min 6 characters'
             ]
@@ -81,7 +87,7 @@ export default {
                         if(this.user.user.id.length>0) {
                             this.setAlert({
                                 status: true,
-                                color: success,
+                                color: 'success',
                                 message: 'Login Success'
                             })
                             this.close()
@@ -94,17 +100,33 @@ export default {
                         }
                     })
                     .catch((error) => {
-                        let response = error.response
+                        let response = error
+                        console.log(response)
                         this.setAlert({
                             status: true,
                             color: 'error',
-                            message: 'error'
+                            message: 'fack'
                         })
                     })
             }
         },
         close() {
             this.$emit('closed', false)
+        },
+        authProvider(provider) {
+            axios.get(`/api/auth/social/${provider}`)
+                .then((response) => {
+                    let data = response.data
+                    console.log(data)
+                    window.location.href = data.url
+                })
+                .catch((error) => {
+                    this.setAlert({
+                        status: true,
+                        color: 'error',
+                        message: 'Login failed'
+                    })
+                })
         }
     }
 }

@@ -26,7 +26,7 @@ class AuthController extends Controller
             'id' => Str::uuid(),
             'name' => 'random name',
             'email' => \Request('email'),
-            'password' => \Request('password'),
+            'password' => bcrypt(\Request('password')),
             // 'role_id' => Role::where('name', 'user')->first()->id,
             'created_at' => Carbon::now('Asia/Jakarta'),
             'updated_at' => Carbon::now('Asia/Jakarta')
@@ -149,6 +149,7 @@ class AuthController extends Controller
             'password' => ['required', 'string']
         ]);
         $data = $request->all();
+        
         $token = Auth::attempt($data);
         if(!$token) {
             return response()->json([
@@ -170,6 +171,22 @@ class AuthController extends Controller
                 'token' => $token,
                 'user' => $user
             ]
+        ]);
+    }
+
+    public function checkToken() {
+        return response()->json([
+            'response_code' => '00',
+            'response_message' => 'token valid'
+        ]);
+    }
+
+    public function logout() {
+        Auth::logout();
+
+        return response()->json([
+            'response_code' => '00',
+            'response_message' => 'user berhasil logout'
         ]);
     }
 }

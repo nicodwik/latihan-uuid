@@ -11,19 +11,25 @@
 |
 */
 
-Route::view('/{any?}', 'app');
+Route::view('/{any?}', 'app')->where('any', '.*');
+// Route::view('/{any?}', function() {
+//     return 'okee';
+// });
 
-Auth::routes();
-Route::get('/home', 'HomeController@index')->name('home');
-Route::group(['middleware' => ['verified']], function () {
-    Route::get('/verified', 'TestController@checkVerified');
-});
-Route::group(['middleware' => ['auth', 'isAdmin']], function () {
-    Route::get('/admin', 'TestController@checkAdmin');
-});
+// Auth::routes();
+// Route::get('/home', 'HomeController@index')->name('home');
+// Route::group(['middleware' => ['verified']], function () {
+//     Route::get('/verified', 'TestController@checkVerified');
+// });
+// Route::group(['middleware' => ['auth', 'isAdmin']], function () {
+//     Route::get('/admin', 'TestController@checkAdmin');
+// });
+// // Route::get('/auth/social/google/callback', function() {
+// //     return 'login berhasil';
+// // });
 
-Route::get('users', function(){
-    return view('users');
-});
+// Route::get('users', function(){
+//     return view('users');
+// });
 
 
